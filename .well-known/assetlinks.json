@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.merhyite.twa",
+    "sha256_cert_fingerprints": ["A7:EB:51:F4:82:42:63:48:4E:BF:B3:3E:7D:9C:4D:1D:CB:65:0D:10:34:3D:9E:70:93:39:26:94:D1:A3:0F:C2"]
+  }
+}]
