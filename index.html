@@ -444,6 +444,18 @@ function renderProfile(){
   $('#achievementsList').innerHTML = achHtml;
   let friendsHtml = '';
   db.friends.forEach((f, i) => { friendsHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:10px; border-radius:8px; margin-bottom:8px;"><span>${f}</span><button class="del" onclick="db.friends.splice(${i},1); save(); renderProfile();">×</button></div>`; });
+  $('#friendsList').innerHTML = friendsHtml || '<div class="muted">Нет друзей.</div>';
+}
+  $('#profileNameText').textContent = db.athletes[db.current]; 
+  $('#genderA').value = db.gender.a; $('#nicknameA').value = db.athletes.a;
+  let achHtml = '';
+  for(let [id, a] of Object.entries(ACHIEVEMENTS)) {
+    const unlocked = db.achievements.includes(id);
+    achHtml += `<div class="ach-item ${unlocked?'unlocked':'locked'}" onclick="alert('${a.name}: ${a.desc}')"><span class="ach-icon">${a.icon}</span><span class="ach-name">${a.name}</span></div>`;
+  }
+  $('#achievementsList').innerHTML = achHtml;
+  let friendsHtml = '';
+  db.friends.forEach((f, i) => { friendsHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:10px; border-radius:8px; margin-bottom:8px;"><span>${f}</span><button class="del" onclick="db.friends.splice(${i},1); save(); renderProfile();">×</button></div>`; });
   $('#friendsList').innerHTML = friendsHtml || '<div class="muted">Нет друзей.</div>
 function drawChart(canvas, series){ if(!canvas) return; const ctx = canvas.getContext('2d'); const dpr = window.devicePixelRatio||1; const W = canvas.clientWidth || 320, H = canvas.clientHeight || 180; canvas.width = W*dpr; canvas.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H); const all = series.flatMap(s=>s.data); if(!all.length){ ctx.fillStyle='#8b98a5'; ctx.font='14px system-ui'; ctx.fillText('Пока нет данных',12,H/2); return; } const xs=[...new Set(all.map(d=>d.x))].sort(); const ys=all.map(d=>d.y); let min=Math.min(...ys), max=Math.max(...ys); if(min===max){ const d=Math.max(1,Math.abs(min)*0.05); min-=d; max+=d; } const pad={l:40,r:10,t:20,b:30}; const X=x=>pad.l + (xs.length===1?(W-pad.l-pad.r)/2 : (W-pad.l-pad.r)*xs.indexOf(x)/(xs.length-1)); const Y=y=>H-pad.b - (H-pad.t-pad.b)*((y-min)/(max-min)); ctx.strokeStyle='#8b98a5'; ctx.fillStyle='#8b98a5'; ctx.font='12px system-ui'; for(let k=0;k<=3;k++){ const v=min+(max-min)*k/3, y=Y(v); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke(); ctx.fillText(String(Math.round(v*10)/10), 5, y+4); } series.forEach(s=>{ if(!s.data.length) return; ctx.strokeStyle=s.color; ctx.fillStyle=s.color; ctx.lineWidth=3; ctx.beginPath(); s.data.forEach((d,i)=>{ const x=X(d.x),y=Y(d.y); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); s.data.forEach(d=>{ ctx.beginPath(); ctx.arc(X(d.x),Y(d.y),4,0,7); ctx.fill(); }); }); }
 
