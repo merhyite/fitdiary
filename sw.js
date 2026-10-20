@@ -1,4 +1,4 @@
-const CACHE = 'fitdiary-v22';
+const CACHE = 'fitdiary-v24';
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html'])));
 });
