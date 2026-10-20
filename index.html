@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1216">
+<title>FitDiary</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  :root { --bg:#0f1216; --card:#1c222a; --line:#2e3845; --text:#f3f4f6; --muted:#9ca3af; --acc:#4f9cf9; --acc2:#f59e0b; --ok:#22c55e; --del:#ef4444; }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font:16px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:90px}
+  .topbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .topbar h1{font-size:20px;margin:0;font-weight:800;color:var(--acc)}
+  #timerDisplay { display:none; font-size:20px; font-weight:800; color:var(--acc2); background:rgba(245,158,11,0.1); padding:4px 12px; border-radius:8px; border:1px solid var(--acc2); cursor:pointer; }
+  .wrap{max-width:600px;margin:0 auto;padding:16px}
+  .page{display:none}.page.on{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+  h2{font-size:16px;margin:0 0 12px;color:var(--text);font-weight:700}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:16px;margin-bottom:10px}
+  button{font:inherit;cursor:pointer;border-radius:10px;border:none;background:var(--line);color:var(--text);padding:14px;font-weight:700;width:100%}
+  button.primary{background:var(--acc);color:#fff}
+  button.ghost{background:transparent;border:1px dashed var(--line)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bottom{position:fixed;left:0;right:0;bottom:0;z-index:999;display:flex;background:var(--card);border-top:1px solid var(--line);padding:8px 4px}
+  .bottom button{flex:1;background:transparent;color:var(--muted);padding:8px;font-size:12px;border-radius:8px}
+  .bottom button.on{color:var(--acc);background:rgba(79,156,249,0.1)}
+  .ex-list { max-height: 40vh; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; padding: 5px; margin-bottom: 10px; }
+  .ex-item { padding: 10px; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .ex-cat { font-size: 12px; font-weight: 800; color: var(--acc); margin: 10px 0 5px 0; text-transform: uppercase; }
+  .log-row { display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid var(--line); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>💪 FitDiary</h1>
+  <div id="timerDisplay" onclick="stopTimer()">00:00</div>
+</div>
+
+<div class="wrap">
+  <!-- ВКЛАДКА ТРЕНИРОВКА -->
+  <section class="page on" id="page-workout">
+    <div class="card">
+      <h2>Записать подход</h2>
+      <label>Упражнение</label>
+      <input type="text" id="searchEx" placeholder="Поиск упражнения..." oninput="renderExList()">
+      <div class="ex-list" id="exList"></div>
+      
+      <div class="row">
+        <div><label>Вес (кг)</label><input type="number" id="weight" placeholder="0"></div>
+        <div><label>Повторы</label><input type="number" id="reps" placeholder="0"></div>
+      </div>
+      <div><label>Подходы</label><input type="number" id="sets" value="3"></div>
+      
+      <button class="primary" onclick="addWorkout()" style="margin-top:10px;">Сохранить подход</button>
+      
+      <button class="ghost" onclick="startTimer(90)" style="margin-top:10px;">⏱️ Таймер 90 сек</button>
+    </div>
+
+    <div class="card">
+      <h2>История</h2>
+      <div id="historyList"></div>
+    </div>
+  </section>
+
+  <!-- ВКЛАДКА ВЕС -->
+  <section class="page" id="page-weight">
+    <div class="card">
+      <h2>Добавить вес</h2>
+      <label>Дата</label><input type="date" id="wDate">
+      <label>Вес (кг)</label><input type="number" id="wKg" step="0.1">
+      <button class="primary" onclick="addWeight()">Сохранить</button>
+    </div>
+    <div class="card">
+      <h2>Последние замеры</h2>
+      <div id="weightList"></div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottom">
+  <button data-tab="workout" class="on" onclick="switchTab('workout', this)">🏋️ Тренировка</button>
+  <button data-tab="weight" onclick="switchTab('weight', this)">⚖️ Вес</button>
+</nav>
+
+<script>
+// БАЗА УПРАЖНЕНИЙ (С ХВАТАМИ)
+const EXERCISES = {
+  'Грудь': ['Жим лёжа', 'Жим на наклонной', 'Жим гантелей лёжа', 'Бабочка', 'Сведение в кроссовере', 'Отжимания на брусьях'],
+  'Спина': [
+    'Тяга блока к поясу (прямой хват)', 'Тяга блока к поясу (обратный хват)', 'Тяга блока к поясу (узкий хват)',
+    'Тяга блока сверху (широкий хват)', 'Тяга блока сверху (узкий хват)', 'Тяга блока сверху (обратный хват)',
+    'Тяга гантели в наклоне', 'Становая тяга', 'Румынская тяга', 'Подтягивания (прямой)', 'Подтягивания (обратный)', 'Тяга Т-грифа', 'Гиперэкстензия', 'Шраги с гантелями'
+  ],
+  'Ноги': ['Присед в Смите', 'Присед со штангой', 'Жим ногами', 'Разгибание ног', 'Сгибание ног лёжа', 'Сведение ног', 'Разведение ног', 'Выпады', 'Подъёмы на носки'],
+  'Плечи': ['Жим гантелей сидя', 'Жим штанги стоя', 'Жим в тренажёре', 'Махи гантелями в стороны', 'Махи гантелями в наклоне', 'Обратная бабочка', 'Тяга к подбородку'],
+  'Руки': ['Подъём штанги на бицепс', 'Молотки', 'Сгибание в тренажёре', 'Жим узким хватом', 'Разгибание на блоке', 'Французский жим'],
+  'Предплечья': ['Сгибание запястий', 'Разгибание запястий', 'Фермерская прогулка', 'Вис на турнике'],
+  'Пресс': ['Скручивания', 'Планка', 'Подъём ног в висе', 'Велосипед']
+};
+let selectedEx = '';
+
+// ИНИЦИАЛИЗАЦИЯ ДАННЫХ
+let db = JSON.parse(localStorage.getItem('fitdiary_simple')) || { workouts: [], weights: [] };
+const save = () => localStorage.setItem('fitdiary_simple', JSON.stringify(db));
+const $ = id => document.getElementById(id);
+
+// ТАЙМЕР
+let timerInt;
+function startTimer(sec) {
+  clearInterval(timerInt);
+  let time = sec;
+  $('timerDisplay').style.display = 'block';
+  const update = () => {
+    const m = Math.floor(time/60), s = time%60;
+    $('timerDisplay').textContent = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+    if(time <= 0) {
+      clearInterval(timerInt);
+      $('timerDisplay').textContent = "ГОТОВО!";
+      if(navigator.vibrate) navigator.vibrate([200,100,200]);
+      setTimeout(()=>{ $('timerDisplay').style.display = 'none'; }, 5000);
+    }
+    time--;
+  };
+  update(); timerInt = setInterval(update, 1000);
+}
+function stopTimer() { clearInterval(timerInt); $('timerDisplay').style.display = 'none'; }
+
+// СПИСОК УПРАЖНЕНИЙ
+function renderExList() {
+  const query = $('searchEx').value.toLowerCase();
+  const container = $('exList');
+  container.innerHTML = '';
+  
+  for (let [cat, exs] of Object.entries(EXERCISES)) {
+    const filtered = exs.filter(ex => ex.toLowerCase().includes(query));
+    if(filtered.length > 0) {
+      let html = `<div class="ex-cat">${cat}</div>`;
+      filtered.forEach(ex => {
+        html += `<div class="ex-item" onclick="selectEx('${ex}')">${ex}</div>`;
+      });
+      container.innerHTML += html;
+    }
+  }
+}
+function selectEx(ex) {
+  selectedEx = ex;
+  $('searchEx').value = ex;
+  $('exList').innerHTML = ''; // Скрываем список после выбора
+}
+
+// ЗАПИСЬ ТРЕНИРОВКИ
+function addWorkout() {
+  if(!selectedEx) return alert('Выбери упражнение из списка!');
+  const w = parseFloat($('weight').value) || 0;
+  const r = parseInt($('reps').value) || 0;
+  const s = parseInt($('sets').value) || 1;
+  if(r === 0) return alert('Укажи повторения!');
+
+  db.workouts.push({ date: new Date().toLocaleDateString('sv-SE'), ex: selectedEx, weight: w, reps: r, sets: s });
+  db.workouts.sort((a,b) => b.date.localeCompare(a.date)); // Сначала новые
+  save();
+  
+  $('weight').value = ''; $('reps').value = '';
+  $('searchEx').value = ''; selectedEx = '';
+  renderHistory();
+  alert('Записано!');
+}
+
+function renderHistory() {
+  $('historyList').innerHTML = db.workouts.slice(0, 15).map(w => 
+    `<div class="log-row">
+      <span>${w.date}</span>
+      <span>${w.ex}</span>
+      <span><b>${w.weight} кг × ${w.reps}</b> (${w.sets} подх.)</span>
+    </div>`
+  ).join('') || '<div style="color:var(--muted); font-size:14px;">Пока пусто</div>';
+}
+
+// ЗАПИСЬ ВЕСА
+function addWeight() {
+  const d = $('wDate').value;
+  const kg = parseFloat($('wKg').value);
+  if(!d || !kg) return alert('Укажи дату и вес!');
+  
+  db.weights = db.weights.filter(w => w.date !== d);
+  db.weights.push({ date: d, kg });
+  db.weights.sort((a,b) => b.date.localeCompare(a.date));
+  save();
+  
+  $('wKg').value = '';
+  renderWeights();
+}
+function renderWeights() {
+  $('weightList').innerHTML = db.weights.slice(0, 10).map(w => 
+    `<div class="log-row"><span>${w.date}</span><span><b>${w.kg} кг</b></span></div>`
+  ).join('') || '<div style="color:var(--muted); font-size:14px;">Нет записей</div>';
+}
+
+// НАВИГАЦИЯ
+function switchTab(tab, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  $(`page-${tab}`).classList.add('on');
+  document.querySelectorAll('.bottom button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// СТАРТ
+$('wDate').value = new Date().toLocaleDateString('sv-SE');
+renderExList(); renderHistory(); renderWeights();
+
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+</script>
+</body>
+  </html>
