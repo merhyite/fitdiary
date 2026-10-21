@@ -1,0 +1,75 @@
+/* ЦВЕТОВАЯ ГАММА "АТЛЕТ" */
+:root {
+  --bg: #121410;          /* Темный хаки */
+  --card: #1c1f1a;        /* Карточки */
+  --line: #2e332c;        /* Границы */
+  --text: #f3f4f6;        /* Белый текст */
+  --muted: #9ca3af;       /* Серый текст */
+  --acc: #f97316;         /* Оранжевый (кнопки) */
+  --acc2: #eab308;        /* Золотой (серия) */
+  --ok: #22c55e;          /* Зеленый (выполнено) */
+  --del: #ef4444;         /* Красный (удалить) */
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; font: 16px/1.5 system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 90px; }
+
+/* ШАПКА */
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--bg); padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.topbar h1 { font-size: 20px; margin: 0; font-weight: 800; color: var(--acc); }
+#timerDisplay { display: none; font-size: 20px; font-weight: 800; color: var(--acc2); background: rgba(234, 179, 8, 0.1); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--acc2); cursor: pointer; }
+
+/* СТРАНИЦЫ */
+.wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
+.page { display: none; }
+.page.on { display: block; animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* КАРТОЧКИ */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+h2 { font-size: 16px; margin: 0 0 12px; color: var(--text); font-weight: 700; }
+label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+/* ИНПУТЫ */
+input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 16px; margin-bottom: 10px; }
+input:focus, select:focus { outline: none; border-color: var(--acc); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* КНОПКИ */
+button { font: inherit; cursor: pointer; border-radius: 10px; border: none; background: var(--line); color: var(--text); padding: 14px; font-weight: 700; width: 100%; margin-bottom: 8px; transition: 0.1s; }
+button:active { transform: scale(0.98); }
+button.primary { background: var(--acc); color: #fff; }
+button.ghost { background: transparent; border: 1px dashed var(--line); }
+
+/* НИЖНЯЯ ПАНЕЛЬ */
+.bottom { position: fixed; left: 0; right: 0; bottom: 0; z-index: 999; display: flex; background: var(--card); border-top: 1px solid var(--line); padding: 8px 4px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+.bottom button { flex: 1; background: transparent; color: var(--muted); padding: 8px; font-size: 11px; border-radius: 8px; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 700; }
+.bottom button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bottom button.on { color: var(--acc); background: rgba(249, 115, 22, 0.1); }
+
+/* МОДАЛЬНОЕ ОКНО */
+.modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal.on { display: flex; }
+.modal-content { background: var(--card); border-radius: 16px; padding: 20px; width: 100%; max-width: 400px; position: relative; }
+.modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: var(--muted); }
+.ex-cat { font-size: 12px; font-weight: 800; color: var(--acc); margin: 10px 0 5px 0; text-transform: uppercase; }
+.ex-item { padding: 10px; border-bottom: 1px solid var(--line); font-size: 15px; cursor: pointer; }
+.ex-item:active { background: var(--line); }
+
+/* ЭЛЕМЕНТЫ ТРЕНИРОВКИ */
+.sess-ex { background: var(--bg); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.sess-ex-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--acc); }
+.set-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.set-num { font-size: 12px; color: var(--muted); width: 50px; font-weight: 700; }
+.set-row input { margin: 0; padding: 8px; font-size: 14px; text-align: center; }
+.set-row button { width: 36px; padding: 8px; margin: 0; background: rgba(239, 68, 68, 0.15); color: var(--del); font-size: 18px; line-height: 1; border-radius: 8px; }
+
+/* ИСТОРИЯ И ПРОГРЕСС */
+.hist-item { background: var(--bg); border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--acc); }
+.hist-title { font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; margin-bottom: 4px; }
+.hist-sets { font-size: 12px; color: var(--muted); }
+.muscle-bar { display: flex; align-items: center; margin-bottom: 8px; font-size: 14px; }
+.muscle-name { width: 80px; color: var(--muted); }
+.muscle-progress { flex: 1; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin: 0 10px; }
+.muscle-fill { height: 100%; background: var(--acc); border-radius: 5px; }
+.muscle-percent { width: 40px; text-align: right; font-weight: 700; }
