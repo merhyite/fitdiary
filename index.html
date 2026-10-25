@@ -49,52 +49,14 @@
     </div>
 
     <div class="card">
-      <h2>Замеры тела</h2>
-      <div class="row">
-        <div><label>Талия (см)</label><input type="number" id="mWaist" step="0.1"></div>
-        <div><label>Грудь (см)</label><input type="number" id="mChest" step="0.1"></div>
-        <div><label>Бицепс (см)</label><input type="number" id="mBiceps" step="0.1"></div>
-      </div>
-      <button class="primary" onclick="saveMeasure()">Сохранить</button>
-      <div id="measureResult" class="gap" style="margin-top:10px;"></div>
-    </div>
-
-    <div class="card">
       <h2>Карта мышц</h2>
       <div id="muscleMap"></div>
     </div>
 
     <div class="card">
-      <h2>История упражнений</h2>
-      <select id="historyEx" onchange="renderHistoryEx()"></select>
+      <h2>Процент силы</h2>
+      <select id="historyEx" onchange="updateHistoryResult()"></select>
       <div id="historyResult" class="gap" style="margin-top:10px;"></div>
-    </div>
-  </section>
-
-  <!-- ПИТАНИЕ -->
-  <section class="page" id="page-nutrition">
-    <div class="card water-card">
-      <h2 style="color:#fff;">Вода</h2>
-      <div style="font-size:24px; font-weight:800;" id="waterText">0 / 2000 мл</div>
-      <div class="water-progress"><div class="water-fill" id="waterFill"></div></div>
-      <div class="water-btns">
-        <button onclick="addWater(500)">+ 0.5 л</button>
-        <button onclick="addWater(1000)">+ 1 л</button>
-        <button onclick="addWater(1500)">+ 1.5 л</button>
-        <button onclick="addWater(2000)">+ 2 л</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Калькулятор БЖУ</h2>
-      <div class="row">
-        <div><label>Пол</label><select id="bjuGender"><option value="male">Мужской</option><option value="female">Женский</option></select></div>
-        <div><label>Вес (кг)</label><input type="number" id="bjuWeight"></div>
-        <div><label>Рост (см)</label><input type="number" id="bjuHeight"></div>
-        <div><label>Возраст</label><input type="number" id="bjuAge"></div>
-      </div>
-      <button class="primary" onclick="calcBJU()">Рассчитать</button>
-      <div id="bjuResult" class="gap" style="margin-top:10px;"></div>
     </div>
   </section>
 
@@ -140,14 +102,6 @@
   </div>
 </div>
 
-<!-- МОДАЛКА ДОСТИЖЕНИЙ -->
-<div class="modal" id="achModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="document.getElementById('achModal').classList.remove('on')">&times;</span>
-    <div id="achModalBody"></div>
-  </div>
-</div>
-
 <nav class="bottom">
   <button data-tab="workout" class="on" onclick="switchTab('workout', this)">
     <svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h2V8a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2H4zm16 0a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2V8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2h2z"/><path d="M10 11h4v2h-4z"/></svg>
@@ -157,10 +111,6 @@
     <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
     Прогресс
   </button>
-  <button data-tab="nutrition" onclick="switchTab('nutrition', this)">
-    <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-    Питание
-  </button>
   <button data-tab="profile" onclick="switchTab('profile', this)">
     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     Профиль
@@ -169,4 +119,4 @@
 
 <script src="app.js"></script>
 </body>
-        </html>
+</html>
