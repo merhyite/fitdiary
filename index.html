@@ -1,40 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10131b"><title>FitDiary — тренировки</title>
-<style>
-:root{--bg:#10131b;--panel:#191e29;--panel2:#202736;--line:#2c3444;--text:#f3f5fa;--muted:#9ba6b8;--accent:#a4f06b;--accent2:#d3ffad;--pink:#f08db2;--blue:#82aaff;--radius:22px}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% -10%,#27353a 0,transparent 38%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button{color:inherit}.app{max-width:1160px;margin:auto;padding:24px 24px 100px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-weight:850;font-size:20px;letter-spacing:-.5px}.logo{width:42px;height:42px;border-radius:14px;background:var(--accent);color:#182014;display:grid;place-items:center;font-size:23px;box-shadow:0 0 28px #a4f06b44}.top-right{display:flex;gap:10px;align-items:center}.pill{border:1px solid var(--line);padding:9px 13px;border-radius:999px;color:var(--muted);font-size:13px}.icon-btn{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--panel);cursor:pointer}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:22px}.hero-main,.hero-side{border:1px solid var(--line);border-radius:28px;padding:28px;background:linear-gradient(135deg,#202936,#171c27 70%);position:relative;overflow:hidden}.hero-main:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:#a4f06b12;right:-80px;top:-110px;filter:blur(2px)}.eyebrow{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800}.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.07;letter-spacing:-1.7px;margin:12px 0}.hero p{color:var(--muted);max-width:510px;margin:0}.hero-side{display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#26352a,#1a2028)}.stat-label{color:var(--muted);font-size:13px}.stat{font-size:37px;font-weight:850;letter-spacing:-1px;margin:6px 0}.progress{height:8px;background:#313b43;border-radius:9px;overflow:hidden;margin:13px 0}.progress span{display:block;width:0;height:100%;background:var(--accent);border-radius:inherit;transition:width .5s}.small{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:8px;margin:20px 0;overflow:auto;padding-bottom:3px}.tab{border:1px solid var(--line);background:var(--panel);padding:10px 16px;border-radius:13px;color:var(--muted);cursor:pointer;white-space:nowrap;transition:.2s}.tab.active,.tab:hover{background:var(--accent);color:#172013;border-color:var(--accent);font-weight:750}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px}.search{flex:1;position:relative}.search input{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:14px;padding:13px 14px 13px 42px;outline:none}.search input:focus{border-color:var(--accent)}.search:before{content:"⌕";position:absolute;left:15px;top:5px;color:var(--muted);font-size:25px}.select{background:var(--panel);border:1px solid var(--line);color:var(--text);padding:12px;border-radius:14px}.section-head{display:flex;justify-content:space-between;align-items:end;margin:22px 0 13px}.section-head h2{font-size:21px;margin:0;letter-spacing:-.5px}.section-head span{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.card{background:linear-gradient(145deg,#1d2430,#181d27);border:1px solid var(--line);border-radius:19px;padding:17px;transition:transform .22s,border-color .22s,box-shadow .22s;animation:rise .35s both}.card:hover{transform:translateY(-4px);border-color:#a4f06b77;box-shadow:0 12px 30px #0003}.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.emoji{font-size:23px;width:44px;height:44px;border-radius:14px;background:#ffffff0a;display:grid;place-items:center}.fav{border:0;background:none;color:#657084;font-size:22px;cursor:pointer}.fav.on{color:var(--pink)}.card h3{font-size:16px;margin:0 0 5px}.card p{font-size:12px;color:var(--muted);margin:0;min-height:36px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.tag{background:#ffffff0a;color:#b5c0d0;padding:4px 8px;border-radius:8px;font-size:11px}.card-actions{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:12px;margin-top:11px}.add{border:0;background:#a4f06b18;color:var(--accent);border-radius:10px;padding:8px 11px;font-weight:750;cursor:pointer}.add:hover{background:var(--accent);color:#172013}.empty{grid-column:1/-1;padding:38px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}.plan{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px}.plan-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.plan h2{margin:0}.primary{background:var(--accent);border:0;color:#172013;font-weight:800;padding:11px 16px;border-radius:12px;cursor:pointer;transition:.2s}.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px #a4f06b33}.plan-list{display:grid;gap:8px;margin-top:14px}.plan-row{display:flex;align-items:center;gap:12px;padding:11px 12px;background:#ffffff06;border:1px solid var(--line);border-radius:13px}.plan-row strong{flex:1}.plan-row input{width:58px;background:#11151d;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px}.remove{background:none;border:0;color:#ff8790;cursor:pointer;font-size:18px}.workout-box{margin-top:14px;border:1px solid #a4f06b55;background:#a4f06b0a;border-radius:15px;padding:15px;display:none}.workout-box.show{display:block;animation:rise .25s}.timer{font-size:28px;font-weight:850;color:var(--accent);margin:8px 0}.timer-controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.timer-controls input{width:70px;background:#11151d;color:var(--text);border:1px solid var(--line);padding:8px;border-radius:9px}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);opacity:0;background:#eaffd9;color:#172013;padding:12px 18px;border-radius:14px;font-weight:750;pointer-events:none;transition:.25s;z-index:5}.toast.show{opacity:1;transform:translate(-50%,0)}footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;padding:20px;z-index:4}.modal.show{display:grid}.dialog{width:min(500px,100%);background:var(--panel);border:1px solid var(--line);border-radius:23px;padding:23px;animation:rise .2s}.dialog h2{margin:0 0 15px}.dialog label{display:block;color:var(--muted);font-size:13px;margin:12px 0 5px}.dialog input{width:100%;background:#11151d;border:1px solid var(--line);padding:11px;border-radius:10px;color:var(--text)}.dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.secondary{background:transparent;border:1px solid var(--line);padding:10px 14px;border-radius:11px;cursor:pointer}@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.hero-side{min-height:150px}}@media(max-width:540px){.app{padding:16px 14px 90px}.grid{grid-template-columns:1fr}.hero-main,.hero-side{padding:21px}.toolbar{flex-wrap:wrap}.search{flex-basis:100%}.select{flex:1}.top .pill{display:none}.plan-head{align-items:flex-start;flex-direction:column}.plan-row{gap:8px}.plan-row strong{font-size:13px}}
-</style></head>
-<body><main class="app">
-<header class="top"><div class="brand"><div class="logo">✦</div>FitDiary</div><div class="top-right"><span class="pill">● Офлайн-дневник</span><button class="icon-btn" id="profileBtn" title="Профиль">☺</button></div></header>
-<section class="hero"><div class="hero-main"><div class="eyebrow">Твой ритм. Твой прогресс.</div><h1>Сильнее<br>с каждой тренировкой</h1><p>Собирай план, отмечай упражнения и отслеживай прогресс — спокойно, шаг за шагом.</p></div><div class="hero-side"><div><div class="stat-label">Упражнений в плане</div><div class="stat" id="planCount">0</div><div class="progress"><span id="progressBar"></span></div></div><div class="small" id="greeting">Небольшой шаг — тоже прогресс ✨</div></div></section>
-<nav class="tabs" id="tabs"></nav><div class="toolbar"><div class="search"><input id="search" placeholder="Найти упражнение…" autocomplete="off"></div><select id="equipment" class="select"><option value="all">Любой инвентарь</option><option>Тренажер</option><option>Гантели</option><option>Блок</option><option>Собственный вес</option><option>Штанга</option></select></div>
-<div class="section-head"><h2 id="groupTitle">Все группы мышц</h2><span id="resultCount"></span></div><section class="grid" id="grid"></section>
-<section class="plan"><div class="plan-head"><div><div class="eyebrow">Моя тренировка</div><h2>План на сегодня</h2></div><button class="primary" id="startBtn">▶ Начать тренировку</button></div><div class="plan-list" id="planList"></div><div class="workout-box" id="workout"><strong>Тренировка началась 💪</strong><p class="small">Выполняй упражнения в комфортном темпе. Отметь подход — запустится отдых.</p><div class="timer" id="timer">01:30</div><div class="timer-controls"><button class="primary" id="doneBtn">✓ Подход выполнен</button><label class="small">Отдых, сек. <input type="number" id="restSeconds" min="15" max="600" value="90"></label><button class="secondary" id="stopTimer">Сбросить таймер</button></div></div></section><footer>Тренируйся в комфортном диапазоне. Техника важнее веса.</footer></main><div class="toast" id="toast"></div>
-<div class="modal" id="modal"><div class="dialog"><h2>Профиль</h2><label for="nameInput">Как к тебе обращаться?</label><input id="nameInput" maxlength="30" placeholder="Имя"><label for="restInput">Отдых между подходами, секунд</label><input id="restInput" type="number" min="15" max="600" value="90"><div class="dialog-actions"><button class="secondary" id="cancelModal">Закрыть</button><button class="primary" id="saveProfile">Сохранить</button></div></div></div>
-<script>
-const groups=['Все','Грудь','Спина','Плечи','Бицепс','Трицепс','Ноги','Ягодицы','Пресс','Кардио'];
-const exercises=[
-['Грудь','Жим от груди сидя','Тренажер','Основные мышцы груди, трицепс','🏋️','10–12'],['Грудь','Сведение рук в тренажере (бабочка)','Тренажер','Грудные мышцы','🦋','12–15'],['Грудь','Жим в наклонном тренажере','Тренажер','Верх груди, трицепс','↗️','10–12'],['Грудь','Жим гантелей лежа','Гантели','Грудь, передняя дельта','🏋️','8–12'],['Грудь','Разведение гантелей лежа','Гантели','Грудные мышцы','🪽','10–15'],['Грудь','Отжимания от пола','Собственный вес','Грудь, плечи, трицепс','〰️','по силам'],
-['Спина','Тяга верхнего блока к груди','Блок','Широчайшие мышцы спины','⬇️','10–12'],['Спина','Горизонтальная тяга сидя','Тренажер','Середина спины','↔️','10–12'],['Спина','Тяга верхнего блока узким хватом','Блок','Широчайшие, бицепс','⬇️','10–12'],['Спина','Тяга гантели одной рукой','Гантели','Спина, задняя дельта','💪','10–12'],['Спина','Гиперэкстензия','Собственный вес','Разгибатели спины, ягодицы','🧘','10–15'],['Спина','Тяга штанги в наклоне','Штанга','Спина, задняя дельта','🏋️','8–12'],
-['Плечи','Жим плечами сидя','Тренажер','Средняя и передняя дельта','⬆️','10–12'],['Плечи','Разведение рук в стороны','Тренажер','Средняя дельта','🪽','12–15'],['Плечи','Подъем гантелей в стороны','Гантели','Средняя дельта','✨','12–15'],['Плечи','Обратная бабочка','Тренажер','Задняя дельта, верх спины','🦋','12–15'],['Плечи','Подъем гантелей перед собой','Гантели','Передняя дельта','⬆️','10–12'],
-['Бицепс','Сгибание рук в тренажере','Тренажер','Бицепс','💪','10–12'],['Бицепс','Сгибание рук на нижнем блоке','Блок','Бицепс','〰️','10–12'],['Бицепс','Подъем гантелей на бицепс','Гантели','Бицепс','💪','10–12'],['Бицепс','Молотковые сгибания','Гантели','Бицепс, предплечья','🔨','10–12'],
-['Трицепс','Разгибание рук на блоке','Блок','Трицепс','⬇️','10–12'],['Трицепс','Разгибание рук над головой на блоке','Блок','Трицепс','🙆','10–12'],['Трицепс','Разгибание рук в тренажере','Тренажер','Трицепс','💪','10–12'],['Трицепс','Отжимания от скамьи','Собственный вес','Трицепс, плечи','↘️','по силам'],
-['Ноги','Жим ногами','Тренажер','Квадрицепсы, ягодицы','🦵','10–15'],['Ноги','Разгибание ног сидя','Тренажер','Передняя поверхность бедра','🦿','12–15'],['Ноги','Сгибание ног сидя','Тренажер','Задняя поверхность бедра','🦵','12–15'],['Ноги','Сгибание ног лежа','Тренажер','Задняя поверхность бедра','🦵','12–15'],['Ноги','Приседание в Смите','Тренажер','Бедра, ягодицы','🏋️','8–12'],['Ноги','Румынская тяга','Гантели','Задняя поверхность бедра','↘️','8–12'],['Ноги','Подъем на носки','Тренажер','Икры','🦶','12–20'],['Ноги','Гакк-присед','Тренажер','Квадрицепсы, ягодицы','🦵','8–12'],['Ноги','Приседания с гантелью','Гантели','Бедра, ягодицы','🏋️','10–12'],
-['Ягодицы','Ягодичный мост в тренажере','Тренажер','Большая ягодичная мышца','🍑','10–15'],['Ягодицы','Отведение ноги назад в кроссовере','Блок','Ягодицы','↗️','12–15'],['Ягодицы','Отведение бедра в тренажере','Тренажер','Средняя ягодичная мышца','↔️','12–20'],['Ягодицы','Ягодичный мост с пола','Собственный вес','Ягодицы, задняя поверхность бедра','🍑','12–20'],['Ягодицы','Отведение ноги назад на четвереньках','Собственный вес','Ягодицы','🐾','12–15'],['Ягодицы','Выпады назад','Гантели','Ягодицы, ноги','↙️','8–12'],
-['Пресс','Скручивания в тренажере','Тренажер','Прямая мышца живота','➰','12–15'],['Пресс','Скручивания на блоке','Блок','Пресс','〰️','12–15'],['Пресс','Подъем коленей в упоре','Собственный вес','Нижняя часть пресса','⬆️','8–12'],['Пресс','Планка','Собственный вес','Кор, стабилизаторы','🧱','20–40 сек'],['Пресс','Dead bug («мертвый жук»)','Собственный вес','Глубокие мышцы кора','🐞','8–12 на сторону'],['Пресс','Боковая планка','Собственный вес','Косые мышцы живота','🧱','15–30 сек'],
-['Кардио','Беговая дорожка','Тренажер','Выносливость','🏃','10–30 мин'],['Кардио','Эллиптический тренажер','Тренажер','Выносливость, ноги','🚴','10–30 мин'],['Кардио','Велотренажер','Тренажер','Выносливость, ноги','🚲','10–30 мин'],['Кардио','Гребной тренажер','Тренажер','Выносливость, все тело','🚣','5–20 мин']
-];
-const $=s=>document.querySelector(s), state={group:'Все',equipment:'all',search:'',plan:JSON.parse(localStorage.getItem('fd_plan')||'[]'),favs:JSON.parse(localStorage.getItem('fd_favs')||'[]'),name:localStorage.getItem('fd_name')||'',rest:+localStorage.getItem('fd_rest')||90};
-function persist(){localStorage.setItem('fd_plan',JSON.stringify(state.plan));$('#planCount').textContent=state.plan.length;$('#progressBar').style.width=Math.min(100,state.plan.length*10)+'%';renderPlan()}
-function renderTabs(){$('#tabs').innerHTML=groups.map(g=>`<button class="tab ${g===state.group?'active':''}" data-group="${g}">${g}</button>`).join('');document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.group=b.dataset.group;renderTabs();renderGrid()})}
-function renderGrid(){let list=exercises.filter(e=>(state.group==='Все'||e[0]===state.group)&&(state.equipment==='all'||e[2]===state.equipment)&&e.slice(0,4).join(' ').toLowerCase().includes(state.search.toLowerCase()));$('#groupTitle').textContent=state.group==='Все'?'Все группы мышц':state.group;$('#resultCount').textContent=`${list.length} упражнений`;$('#grid').innerHTML=list.length?list.map((e,i)=>{let id=exercises.indexOf(e),fav=state.favs.includes(id);return `<article class="card" style="animation-delay:${(i%9)*35}ms"><div class="card-top"><div class="emoji">${e[4]}</div><button class="fav ${fav?'on':''}" data-fav="${id}" aria-label="Избранное">${fav?'♥':'♡'}</button></div><h3>${e[1]}</h3><p>${e[3]}</p><div class="tags"><span class="tag">${e[0]}</span><span class="tag">${e[2]}</span><span class="tag">${e[5]} повт.</span></div><div class="card-actions"><span class="small">Добавить в план</span><button class="add" data-add="${id}">＋ Добавить</button></div></article>`}).join(''):'<div class="empty">Ничего не найдено. Попробуй другой запрос или фильтр.</div>';document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>add(+b.dataset.add));document.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{let id=+b.dataset.fav;state.favs=state.favs.includes(id)?state.favs.filter(x=>x!==id):[...state.favs,id];localStorage.setItem('fd_favs',JSON.stringify(state.favs));renderGrid()})}
-function add(id){if(state.plan.some(x=>x.id===id)){toast('Уже добавлено в план');return}state.plan.push({id,sets:3});persist();toast('Добавлено в план ✓')}
-function renderPlan(){let el=$('#planList');el.innerHTML=state.plan.length?state.plan.map((x,i)=>{let e=exercises[x.id];return `<div class="plan-row"><span class="small">${String(i+1).padStart(2,'0')}</span><strong>${e[1]} <span class="small">· ${e[0]}</span></strong><span class="small">Подходы</span><input aria-label="Количество подходов" type="number" min="1" max="10" value="${x.sets}" data-sets="${x.id}"><button class="remove" data-remove="${x.id}" aria-label="Удалить">×</button></div>`}).join(''):'<div class="empty">Пока пусто — добавь упражнения из библиотеки выше</div>';document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{state.plan=state.plan.filter(x=>x.id!==+b.dataset.remove);persist()});document.querySelectorAll('[data-sets]').forEach(inp=>inp.onchange=()=>{let item=state.plan.find(x=>x.id===+inp.dataset.sets);item.sets=Math.max(1,Math.min(10,+inp.value||1));persist()});$('#startBtn').disabled=!state.plan.length;$('#startBtn').style.opacity=state.plan.length?1:.55}
-function toast(t){let x=$('#toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1900)}
-$('#search').oninput=e=>{state.search=e.target.value;renderGrid()};$('#equipment').onchange=e=>{state.equipment=e.target.value;renderGrid()};$('#planCount').textContent=state.plan.length;renderTabs();renderGrid();persist();
-function greet(){if(state.name)$('#greeting').textContent=`Привет, ${state.name}! Небольшой шаг — тоже прогресс ✨`}greet();
-$('#profileBtn').onclick=()=>{$('#nameInput').value=state.name;$('#restInput').value=state.rest;$('#modal').classList.add('show')};$('#cancelModal').onclick=()=>$('#modal').classList.remove('show');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('show')};$('#saveProfile').onclick=()=>{state.name=$('#nameInput').value.trim();state.rest=Math.max(15,Math.min(600,+$('#restInput').value||90));localStorage.setItem('fd_name',state.name);localStorage.setItem('fd_rest',state.rest);greet();$('#modal').classList.remove('show');toast('Профиль сохранен')};
-let tick=null,remaining=0;function showTime(){let m=Math.floor(remaining/60),s=remaining%60;$('#timer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}function startTimer(){clearInterval(tick);remaining=state.rest;showTime();tick=setInterval(()=>{remaining--;showTime();if(remaining<=0){clearInterval(tick);tick=null;toast('Отдых окончен — готово к следующему подходу!');if('vibrate'in navigator)navigator.vibrate([180,90,180])}},1000)}$('#startBtn').onclick=()=>{$('#workout').classList.add('show');$('#restSeconds').value=state.rest;$('#workout').scrollIntoView({behavior:'smooth',block:'center'});toast('Хорошей тренировки!')};$('#doneBtn').onclick=()=>{state.rest=Math.max(15,Math.min(600,+$('#restSeconds').value||90));startTimer()};$('#stopTimer').onclick=()=>{clearInterval(tick);tick=null;remaining=state.rest;showTime()};
-</script></body></html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>FitDiary</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <h1>FitDiary</h1>
+  <div id="timerDisplay" onclick="stopTimer()">00:00</div>
+</div>
+
+<main class="wrap">
+  <!-- ПЛАН -->
+  <section class="page on" id="page-plan">
+    <div class="card">
+      <h2>Моя программа</h2>
+      <div id="planList"></div>
+    </div>
+  </section>
+
+  <!-- ТРЕНИРОВКА -->
+  <section class="page" id="page-workout">
+    <div id="activeSession" style="display:none;">
+      <div class="card">
+        <h2 id="sessionTitle">Тренировка</h2>
+        <div id="sessionList"></div>
+        <button class="primary" onclick="finishSession()" style="margin-top:15px;">Завершить</button>
+        <button class="ghost" onclick="cancelSession()">Отменить</button>
+      </div>
+    </div>
+    <div id="noSession" class="card" style="text-align:center;">
+      <p style="color:var(--muted);">Нет активной тренировки. Перейдите во вкладку «План», чтобы начать.</p>
+    </div>
+  </section>
+
+  <!-- ПРОФИЛЬ -->
+  <section class="page" id="page-profile">
+    <div class="card profile-header">
+      <div class="profile-avatar">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+      </div>
+      <input type="text" id="userName" placeholder="Ваше имя" style="text-align:center; font-size:22px; font-weight:800; background:transparent; border:none; border-bottom:1px solid var(--line); color:var(--text); margin-bottom:0;" onchange="saveName(this.value)">
+    </div>
+
+    <div class="card">
+      <h2>Настройки</h2>
+      <label>Таймер отдыха (сек)</label>
+      <select id="timerSetting" onchange="saveTimer(this.value)">
+        <option value="60">60</option>
+        <option value="90">90</option>
+        <option value="120">120</option>
+      </select>
+      <button class="danger" onclick="resetData()" style="margin-top:10px;">Сбросить всё</button>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom">
+  <button data-tab="plan" class="on" onclick="switchTab('plan', this)">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    План
+  </button>
+  <button data-tab="workout" onclick="switchTab('workout', this)">
+    <svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h2V8a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2H4zm16 0a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2V8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2h2z"/><path d="M10 11h4v2h-4z"/></svg>
+    Трен.
+  </button>
+  <button data-tab="profile" onclick="switchTab('profile', this)">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Профиль
+  </button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
