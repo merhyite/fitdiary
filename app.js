@@ -25,11 +25,11 @@ const ACHIEVEMENTS = {
 };
 
 // ХРАНИЛИЩЕ
-let db = JSON.parse(localStorage.getItem('fitdiary_v39')) || {
+let db = JSON.parse(localStorage.getItem('fitdiary_v40')) || {
   plan: {}, workouts: [], weights: [],
   activeSession: null, name: 'Атлет', timer: 90, achievements: []
 };
-const save = () => localStorage.setItem('fitdiary_v39', JSON.stringify(db));
+const save = () => localStorage.setItem('fitdiary_v40', JSON.stringify(db));
 const $ = id => document.getElementById(id);
 const today = () => new Date().toLocaleDateString('sv-SE');
 
@@ -128,7 +128,7 @@ function addExToPlan(ex) {
 function startDay(day) {
   const exs = db.plan[day] || [];
   if (exs.length === 0) return alert('Нет упражнений');
-  db.activeSession = { day: day, date: today(), exercises: exs.map(e => ({ ex: e, sets: [{ w: '', r: '' }] })) };
+  db.activeSession = { day: day, date: today(), exercises: exs.map(e => ({ ex: e, sets: [{ w: '', r: '', done: false }] })) };
   save(); renderSession();
   $('activeSession').scrollIntoView({ behavior: 'smooth' });
 }
@@ -149,22 +149,27 @@ function renderSession() {
         <input type="number" placeholder="кг" value="${set.w}" onchange="updateSet(${i}, ${j}, 'w', this.value)">
         <input type="number" placeholder="повт" value="${set.r}" onchange="updateSet(${i}, ${j}, 'r', this.value)">
         <button onclick="removeSet(${i}, ${j})">×</button>
+        <button class="${set.done ? 'primary' : 'ghost'}" style="width: auto; padding: 8px 12px; margin: 0;" onclick="toggleSetDone(${i}, ${j})">${set.done ? '✓' : 'Выполнено'}</button>
       </div>`;
     });
-    html += `<button class="ghost" onclick="addSet(${i})" style="padding:8px; font-size:12px;">+ Подход</button>
-    <button class="primary" onclick="completeSet(${i})" style="padding:8px; font-size:12px; margin-top:5px;">✓ Выполнено (Таймер)</button></div>`;
+    html += `<button class="ghost" onclick="addSet(${i})" style="padding:8px; font-size:12px;">+ Подход</button></div>`;
   });
   $('sessionList').innerHTML = html;
 }
 
 function updateSet(exIdx, setIdx, field, val) { db.activeSession.exercises[exIdx].sets[setIdx][field] = val; save(); }
-function addSet(exIdx) { db.activeSession.exercises[exIdx].sets.push({ w: '', r: '' }); save(); renderSession(); }
+function addSet(exIdx) { db.activeSession.exercises[exIdx].sets.push({ w: '', r: '', done: false }); save(); renderSession(); }
 function removeSet(exIdx, setIdx) { if (db.activeSession.exercises[exIdx].sets.length > 1) { db.activeSession.exercises[exIdx].sets.splice(setIdx, 1); save(); renderSession(); } }
 
-// ТАЙМЕР ЗАПУСКАЕТСЯ ТОЛЬКО ПОСЛЕ НАЖАТИЯ "ВЫПОЛНЕНО"
-function completeSet(exIdx) {
-  startTimer(db.timer);
-  alert('Подход записан! Таймер отдыха пошел.');
+// ТАЙМЕР ЗАПУСКАЕТСЯ ТОЛЬКО ЗДЕСЬ!
+function toggleSetDone(exIdx, setIdx) {
+  const set = db.activeSession.exercises[exIdx].sets[setIdx];
+  set.done = !set.done;
+  save();
+  if (set.done) {
+    startTimer(db.timer); // Запускаем таймер после выполнения
+  }
+  renderSession();
 }
 
 function finishSession() {
@@ -197,7 +202,7 @@ function renderWeightResult() {
       const diff = w.kg - list[i+1].kg;
       change = diff !== 0 ? `<span style="color:${diff > 0 ? 'var(--ok)' : 'var(--del)'}">${diff > 0 ? '+' : ''}${diff.toFixed(1)} кг</span>` : '';
     }
-    return `<div style="display:flex; justify-content:space-between; font-size:14px;"><span>${w.date}</span><span>${w.kg} кг ${change}</span></div>`;
+    return `<div style="display:flex; justify-content:space-between; font-size:14px; padding:5px 0;"><span>${w.date}</span><span>${w.kg} кг ${change}</span></div>`;
   }).join('');
 }
 
@@ -234,9 +239,9 @@ function updateHistoryResult() {
   const diff = lastMax - prevMax;
   const pct = prevMax > 0 ? ((diff / prevMax) * 100).toFixed(1) : 0;
   $('historyResult').innerHTML = `
-    <div style="font-size:14px;">Прошлый раз: <b>${prevMax} кг</b></div>
-    <div style="font-size:14px;">Сейчас: <b>${lastMax} кг</b></div>
-    <div style="font-size:14px; color:${diff >= 0 ? 'var(--ok)' : 'var(--del)'};">Изменение: ${diff > 0 ? '+' : ''}${diff} кг (${pct}%)</div>
+    <div style="font-size:14px; padding:5px 0;">Прошлый раз: <b>${prevMax} кг</b></div>
+    <div style="font-size:14px; padding:5px 0;">Сейчас: <b>${lastMax} кг</b></div>
+    <div style="font-size:14px; padding:5px 0; color:${diff >= 0 ? 'var(--ok)' : 'var(--del)'};">Изменение: ${diff > 0 ? '+' : ''}${diff} кг (${pct}%)</div>
   `;
 }
 
@@ -275,7 +280,7 @@ function calcStreak() {
 
 function saveName(val) { db.name = val.trim() || 'Атлет'; save(); }
 function saveTimer(val) { db.timer = parseInt(val); save(); }
-function resetData() { if (confirm('Удалить ВСЁ?')) { localStorage.removeItem('fitdiary_v39'); location.reload(); } }
+function resetData() { if (confirm('Удалить ВСЁ?')) { localStorage.removeItem('fitdiary_v40'); location.reload(); } }
 
 // ================= НАВИГАЦИЯ =================
 function switchTab(tab, btn) {
